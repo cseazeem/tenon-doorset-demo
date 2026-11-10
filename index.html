@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tenon | Intelligent Doorset Manufacturing</title>
+  <meta name="description" content="From technical specifications to production and traceable documentation, all in one connected workflow. An independent concept demonstration using fictional project data." />
+  <meta name="theme-color" content="#16181c" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tenon | Intelligent Doorset Manufacturing" />
+  <meta property="og:description" content="Spec review, hardware schedules, drawing revisions, BOMs, production and fire tag records for fire-rated doorsets, in one connected workflow." />
+  <meta property="og:image" content="https://cseazeem.github.io/tenon-doorset-demo/assets/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233987e5'/%3E%3Cpath d='M8 10h9v4h7v4h-7v4H8z' fill='%23fff'/%3E%3Cpath d='M19 10h5v4h-5zM19 18h5v4h-5z' fill='%23fff' fill-opacity='.45'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --surface: #ffffff;
+      --ink: #14161a;
+      --ink-2: #3d3e42;
+      --muted: #64635e;
+      --line: #e5e4df;
+      --brand: #1d5fb8;
+      --brand-ink: #ffffff;
+      --brand-soft: #e9f1fb;
+      --hero: #16181c;
+      --hero-ink: #f1f0ec;
+      --hero-muted: #a9abb2;
+      --hero-line: rgba(255, 255, 255, 0.09);
+      --ok: #1d7a3a;
+      --warn: #8a5a00;
+      --warn-soft: #fdf3dc;
+      --shadow: 0 1px 2px rgba(17, 18, 20, 0.06), 0 12px 32px -12px rgba(17, 18, 20, 0.22);
+      --radius: 12px;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1012;
+        --surface: #17191c;
+        --ink: #eeede9;
+        --ink-2: #cfcec9;
+        --muted: #a3a29d;
+        --line: #2a2b2f;
+        --brand: #5b9cf0;
+        --brand-ink: #0d1420;
+        --brand-soft: #18263a;
+        --hero: #0b0c0e;
+        --ok: #4cc275;
+        --warn: #e9b34a;
+        --warn-soft: #2b2312;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -16px rgba(0, 0, 0, 0.7);
+        color-scheme: dark;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.6 "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 55%, transparent); outline-offset: 2px; border-radius: 6px; }
+    .wrap { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* ---------- header ---------- */
+    .top {
+      position: sticky; top: 0; z-index: 20;
+      background: color-mix(in srgb, var(--hero) 92%, transparent);
+      backdrop-filter: saturate(140%) blur(10px);
+      border-bottom: 1px solid var(--hero-line);
+      color: var(--hero-ink);
+    }
+    .top .wrap { display: flex; align-items: center; gap: 24px; height: 60px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; letter-spacing: -0.01em; }
+    .brand svg { width: 28px; height: 28px; flex: none; }
+    .brand small { display: block; font-weight: 400; font-size: 11px; color: var(--hero-muted); letter-spacing: 0; line-height: 1.2; }
+    .nav { display: flex; gap: 20px; margin-left: auto; font-size: 14px; }
+    .nav a { color: var(--hero-muted); text-decoration: none; }
+    .nav a:hover { color: var(--hero-ink); }
+    @media (max-width: 720px) { .nav { display: none; } }
+
+    /* ---------- hero ---------- */
+    .hero { background: var(--hero); color: var(--hero-ink); padding: 72px 0 0; overflow: hidden; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--hero-muted);
+      border: 1px solid var(--hero-line); border-radius: 999px; padding: 4px 12px;
+    }
+    .eyebrow i { width: 7px; height: 7px; border-radius: 50%; background: #e9b34a; display: inline-block; }
+    h1 {
+      font-size: clamp(34px, 5.4vw, 58px); line-height: 1.04; letter-spacing: -0.035em;
+      font-weight: 600; margin: 20px 0 18px; max-width: 24ch; text-wrap: balance;
+    }
+    .lede { font-size: clamp(17px, 2vw, 19px); color: var(--hero-muted); max-width: 62ch; margin: 0; }
+    .lede strong { color: var(--hero-ink); font-weight: 500; }
+    .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 0; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px;
+      border-radius: 10px; font-weight: 500; font-size: 15px; text-decoration: none; border: 1px solid transparent;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: #3987e5; color: #fff; }
+    .btn-primary:hover { background: #2a78d6; }
+    .btn-ghost { border-color: var(--hero-line); color: var(--hero-ink); }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.06); }
+    .facts { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 34px 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--hero-muted); }
+    .facts b { color: var(--hero-ink); font-weight: 600; font-size: 16px; margin-right: 4px; }
+    .hero-shot { margin: 48px auto 0; max-width: 1100px; position: relative; }
+    .hero-shot::after { /* fade into page background */
+      content: ""; position: absolute; inset: auto 0 0 0; height: 34%;
+      background: linear-gradient(to bottom, transparent, var(--hero));
+      pointer-events: none;
+    }
+
+    /* browser frame */
+    .frame {
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .hero .frame { border-color: rgba(255, 255, 255, 0.12); border-bottom: 0; border-radius: 12px 12px 0 0; }
+    .frame-bar { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 92%, var(--ink)); }
+    .hero .frame-bar { border-color: rgba(255, 255, 255, 0.08); background: #1e2025; }
+    .frame-bar i { width: 9px; height: 9px; border-radius: 50%; background: color-mix(in srgb, var(--muted) 45%, transparent); }
+    .frame-bar span { margin-left: 10px; font-size: 11px; color: var(--muted); }
+    .zoom { cursor: zoom-in; width: 100%; height: auto; }
+
+    /* ---------- sections ---------- */
+    section { padding: 88px 0; scroll-margin-top: 64px; }
+    .kicker { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand); margin: 0 0 10px; }
+    h2 { font-size: clamp(27px, 3.4vw, 38px); line-height: 1.12; letter-spacing: -0.025em; font-weight: 600; margin: 0 0 14px; max-width: 24ch; text-wrap: balance; }
+    .sub { color: var(--muted); font-size: 17px; max-width: 64ch; margin: 0; }
+
+    /* workflow */
+    .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 32px 0 0; padding: 0; list-style: none; }
+    .flow li { display: flex; align-items: center; gap: 8px; }
+    .flow li:not(:last-child)::after { content: "→"; color: var(--muted); font-size: 14px; }
+    .flow a {
+      display: inline-block; text-decoration: none; font-size: 14px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px;
+    }
+    .flow a:hover { border-color: var(--brand); color: var(--brand); }
+    .flow .ai { background: var(--brand-soft); border-color: transparent; color: var(--brand); }
+
+    /* tour */
+    .tour { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 32px; margin-top: 40px; align-items: start; }
+    .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; position: relative; }
+    .step {
+      width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer;
+      background: transparent; border: 1px solid transparent; border-radius: 10px; padding: 10px 14px;
+      display: grid; grid-template-columns: 26px 1fr; gap: 0 10px;
+    }
+    .step:hover { background: color-mix(in srgb, var(--surface) 70%, transparent); }
+    .step .n { font-size: 12px; font-weight: 600; color: var(--muted); padding-top: 3px; font-variant-numeric: tabular-nums; }
+    .step .t { font-weight: 500; font-size: 15px; line-height: 1.4; }
+    .step .tag { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: .04em; color: var(--brand); background: var(--brand-soft); border-radius: 4px; padding: 1px 5px; margin-left: 6px; vertical-align: 2px; }
+    .step .d { grid-column: 2; font-size: 14px; color: var(--muted); margin: 6px 0 2px; display: none; line-height: 1.55; }
+    .step[aria-selected="true"] { background: var(--surface); border-color: var(--line); box-shadow: var(--shadow); }
+    .step[aria-selected="true"] .n { color: var(--brand); }
+    .step[aria-selected="true"] .d { display: block; }
+    .viewer { position: sticky; top: 84px; }
+    .viewer figure { margin: 0; }
+    .viewer img { aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; background: var(--surface); }
+    .viewer-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
+    .viewer-nav .count { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .icon-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      height: 38px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--line);
+      background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; cursor: pointer;
+    }
+    .icon-btn:hover { border-color: var(--brand); color: var(--brand); }
+    .mobile-desc { display: none; }
+
+    @media (max-width: 900px) {
+      .tour { grid-template-columns: 1fr; gap: 16px; }
+      .steps { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 6px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+      .steps::-webkit-scrollbar { display: none; }
+      .steps li { scroll-snap-align: start; flex: none; }
+      .step { display: block; white-space: nowrap; padding: 8px 12px; border-color: var(--line); background: var(--surface); }
+      .step .n { display: none; }
+      .step .t { font-size: 14px; }
+      .step .tag { display: none; }
+      .step .d { display: none !important; }
+      .step[aria-selected="true"] { background: var(--ink); color: var(--bg); box-shadow: none; }
+      .viewer { position: static; }
+      .mobile-desc { display: block; margin: 14px 2px 0; }
+      .mobile-desc h3 { margin: 0 0 6px; font-size: 18px; letter-spacing: -0.01em; }
+      .mobile-desc p { margin: 0; color: var(--muted); font-size: 15px; }
+    }
+
+    /* AI */
+    .ai-band { background: var(--surface); border-block: 1px solid var(--line); }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 36px; }
+    .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+    .card h3 { margin: 12px 0 8px; font-size: 18px; letter-spacing: -0.01em; }
+    .card p { margin: 0; color: var(--muted); font-size: 15px; }
+    .card ul { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 14px; color: var(--ink-2); }
+    .card li { display: grid; grid-template-columns: 18px 1fr; gap: 6px; }
+    .card li::before { content: "✓"; color: var(--ok); font-weight: 700; }
+    .badge { display: inline-flex; width: 36px; height: 36px; border-radius: 9px; align-items: center; justify-content: center; background: var(--brand-soft); color: var(--brand); }
+    .badge svg { width: 18px; height: 18px; }
+    .modes { margin: 28px 0 0; display: flex; gap: 12px; align-items: flex-start; padding: 16px 18px; border-radius: var(--radius); background: var(--brand-soft); font-size: 15px; }
+    .modes svg { flex: none; width: 18px; height: 18px; color: var(--brand); margin-top: 3px; }
+    .modes p { margin: 0; }
+    @media (max-width: 900px) { .cards { grid-template-columns: 1fr; } }
+
+    /* built */
+    .built { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) 220px; gap: 24px; margin-top: 36px; align-items: start; }
+    .list-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; }
+    .list-card h3 { margin: 0 0 14px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    .list-card ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: 15px; color: var(--ink-2); }
+    .list-card li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; }
+    .yes li::before { content: "✓"; color: var(--ok); font-weight: 700; }
+    .bounds { background: var(--warn-soft); border-color: transparent; }
+    .bounds h3 { color: var(--warn); }
+    .bounds li::before { content: "•"; color: var(--warn); font-weight: 700; }
+    .phone { border-radius: 26px; border: 6px solid #1b1d22; overflow: hidden; box-shadow: var(--shadow); background: #1b1d22; }
+    .phone-cap { text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px; }
+    .stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 36px 0 0; padding: 0; list-style: none; }
+    .stack li { font-size: 13px; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); }
+    @media (max-width: 980px) { .built { grid-template-columns: 1fr 1fr; } .phone-wrap { grid-column: 1 / -1; max-width: 240px; margin: 0 auto; } }
+    @media (max-width: 640px) { .built { grid-template-columns: 1fr; } }
+
+    /* contact & footer */
+    .contact { background: var(--hero); color: var(--hero-ink); border-radius: 18px; padding: clamp(28px, 5vw, 56px); display: grid; grid-template-columns: 1.4fr 1fr; gap: 28px; align-items: center; }
+    .contact h2 { color: var(--hero-ink); }
+    .contact p { color: var(--hero-muted); margin: 0; font-size: 17px; }
+    .contact .who { border-left: 1px solid var(--hero-line); padding-left: 28px; font-size: 15px; color: var(--hero-muted); }
+    .contact .who strong { display: block; color: var(--hero-ink); font-size: 18px; font-weight: 600; margin-bottom: 2px; }
+    @media (max-width: 760px) { .contact { grid-template-columns: 1fr; } .contact .who { border-left: 0; border-top: 1px solid var(--hero-line); padding: 20px 0 0; } }
+    footer { padding: 36px 0 48px; color: var(--muted); font-size: 13px; }
+    footer p { margin: 0 0 6px; max-width: 90ch; }
+
+    /* lightbox */
+    dialog.lightbox { padding: 0; border: 0; background: transparent; max-width: min(1400px, 96vw); width: 100%; }
+    dialog.lightbox::backdrop { background: rgba(8, 9, 11, 0.86); }
+    dialog.lightbox img { width: 100%; height: auto; max-height: 88vh; object-fit: contain; border-radius: 10px; }
+    dialog.lightbox p { color: #d6d5d0; text-align: center; font-size: 14px; margin: 12px 0 0; }
+    dialog.lightbox button { position: fixed; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.14); color: #fff; font-size: 22px; cursor: pointer; }
+
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn { transition: none; } }
+  
+    /* doorset showcase additions */
+    .value { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; margin-top: 36px; }
+    .value div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+    .value b { display: block; font-size: 16px; margin-bottom: 6px; letter-spacing: -0.01em; }
+    .value span { color: var(--muted); font-size: 15px; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; margin-top: 32px; }
+    .gallery figure { margin: 0; }
+    .gallery figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+    .gallery img { aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+    .phone-cell { aspect-ratio: 16 / 10; display: flex; justify-content: center; align-items: flex-start; padding-top: 16px; background: color-mix(in srgb, var(--surface) 90%, var(--ink)); }
+    .gallery .phone-cell img { width: 36%; aspect-ratio: auto; border: 5px solid #1b1d22; border-bottom: 0; border-radius: 18px 18px 0 0; }
+    .dur { font-size: 11.5px; color: var(--muted); font-weight: 500; margin-left: 6px; font-variant-numeric: tabular-nums; }
+    .tour-bar { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; margin-top: 12px; }
+    .tour-bar i { display: block; height: 100%; width: 0; background: var(--brand); transition: width .25s linear; }
+    .icon-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+    .icon-btn { white-space: nowrap; }
+    .viewer-nav { flex-wrap: wrap; justify-content: flex-start; gap: 8px; }
+    .nav-extras { display: flex; gap: 8px; }
+    .viewer-nav .count { flex: 1; text-align: center; }
+    .built.two { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    @media (max-width: 640px) {
+      .built.two { grid-template-columns: 1fr; }
+      .viewer-nav .nav-prev { order: 1; } .viewer-nav .count { order: 2; } .viewer-nav .nav-next { order: 3; }
+      .nav-extras { order: 4; width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#top" aria-label="Tenon, back to top">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#3987e5" /><path d="M8 10h9v4h7v4h-7v4H8z" fill="#fff" /><path d="M19 10h5v4h-5zM19 18h5v4h-5z" fill="#fff" fill-opacity=".45" /></svg>
+        <span>Tenon<small>Intelligent doorset manufacturing</small></span>
+      </a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#tour">Walkthrough</a>
+        <a href="#value">For doorset teams</a>
+        <a href="#screens">More screens</a>
+        <a href="#scope">What's built</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div class="wrap">
+        <span class="eyebrow"><i aria-hidden="true"></i> Independent concept demonstration using fictional project data.</span>
+        <h1>Tenon | Intelligent Doorset Manufacturing</h1>
+        <p class="lede">From technical specifications to production and traceable documentation — all in one connected workflow.</p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="#tour">Take the 3-minute walkthrough <span aria-hidden="true">↓</span></a>
+          <a class="btn btn-ghost" href="#value">What it changes</a>
+        </div>
+        <ul class="facts" aria-label="Demo project">
+          <li><b>Riverside Commercial Centre</b> fictional project</li>
+          <li><b>16</b> fire-rated timber doorsets</li>
+          <li><b>2</b> packages</li>
+          <li><b>Technical review</b> current status</li>
+        </ul>
+      </div>
+      <div class="hero-shot wrap">
+        <div class="frame">
+          <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>Riverside Commercial Centre · overview</span></div>
+          <img class="zoom" src="assets/overview.webp" width="1600" height="1000"
+               alt="Project overview: doorsets requiring review, specifications awaiting approval, hardware conflicts, drawing revisions, materials requiring purchasing, production readiness and fire tag documentation, with the connected workflow below."
+               data-caption="Project overview – every count comes from the project's records" />
+        </div>
+      </div>
+    </div>
+
+    <section id="flow">
+      <div class="wrap">
+        <p class="kicker">One connected workflow</p>
+        <h2>Information flows from stage to stage without retyping.</h2>
+        <p class="sub">The approved hardware schedule prices the quotation, the accepted quotation becomes the order, the order builds the bill of materials, and the BOM drives purchasing and production. Fire tag records are created automatically along the way.</p>
+        <ol class="flow" aria-label="Workflow">
+          <li><a class="ai" href="#tour" data-step="2">Specification</a></li>
+          <li><a class="ai" href="#tour" data-step="2">Review</a></li>
+          <li><a href="#tour" data-step="3">Approval</a></li>
+          <li><a href="#tour" data-step="3">Quotation</a></li>
+          <li><a href="#tour" data-step="3">Order</a></li>
+          <li><a href="#tour" data-step="3">BOM</a></li>
+          <li><a href="#tour" data-step="6">Production</a></li>
+          <li><a href="#tour" data-step="6">Dispatch</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="tour" style="padding-top: 0">
+      <div class="wrap">
+        <p class="kicker">Guided walkthrough · about 3 minutes</p>
+        <h2>The demo, step by step</h2>
+        <p class="sub">The same six steps as the guided demo inside the app. Click through, or press Auto to play each step for its suggested time. Tap any screenshot to see it full size.</p>
+        <div class="tour">
+          <ol class="steps" role="tablist" aria-label="Walkthrough steps">
+            <li><button class="step" role="tab" aria-selected="true" aria-controls="tour-view" data-img="assets/overview.webp" data-seconds="20"
+              data-alt="Project overview with seven live counts and the connected workflow for Package B">
+              <span class="n">01</span><span class="t">Project overview<span class="dur">~20s</span></span>
+              <span class="d">Riverside Commercial Centre in one view: doorsets waiting for review, hardware conflicts, drawing changes, materials to buy, production readiness and fire tag paperwork. Every number is counted from the project's records, not typed in.</span>
+            </button></li>
+            <li><button class="step" role="tab" aria-selected="false" aria-controls="tour-view" data-img="assets/review.webp" data-seconds="40"
+              data-alt="AI specification review: source text on the left, findings with evidence and suggested corrections on the right">
+              <span class="n">02</span><span class="t">AI specification review<span class="dur">~40s</span></span>
+              <span class="d">Instead of someone reading the specification line by line, Tenon flags what's missing or contradictory: no door closers specified, D3.04 shown at two different sizes, hardware marked 'TBC', vague fire-rating wording and clashing materials. Each finding shows the line it came from and a suggested fix, and a manager approves the findings. Nothing is certified.</span>
+            </button></li>
+            <li><button class="step" role="tab" aria-selected="false" aria-controls="tour-view" data-img="assets/hardware.webp" data-seconds="35"
+              data-alt="Door-by-door hardware schedule with the cost and purchasing impact of a change">
+              <span class="n">03</span><span class="t">Hardware schedule &amp; BOM<span class="dur">~35s</span></span>
+              <span class="d">Every door's hinges, lock, closer, handle and seals in one schedule. Conflicts such as a missing closer or non-fire-rated hinges block approval. Change a door and you immediately see the effect on material cost, the bill of materials and what needs purchasing.</span>
+            </button></li>
+            <li><button class="step" role="tab" aria-selected="false" aria-controls="tour-view" data-img="assets/drawings.webp" data-seconds="30"
+              data-alt="Drawing revisions: current, superseded and awaiting approval, with a Rev A to Rev B comparison">
+              <span class="n">04</span><span class="t">Drawing revision tracking<span class="dur">~30s</span></span>
+              <span class="d">Shop drawings keep every revision. Revision B shows exactly what changed from Revision A. Older revisions open stamped SUPERSEDED, unapproved ones NOT APPROVED, and a package can't be released to production while a newer revision is still waiting for sign-off.</span>
+            </button></li>
+            <li><button class="step" role="tab" aria-selected="false" aria-controls="tour-view" data-img="assets/fire-tags.webp" data-seconds="30"
+              data-alt="Fire tag documentation register showing complete and incomplete records">
+              <span class="n">05</span><span class="t">Fire tag register<span class="dur">~30s</span></span>
+              <span class="d">One record per fire-rated doorset: tag reference, rating, manufacturing batch, location, documents and inspection status, created automatically from the order. Gaps are highlighted and anyone can flag missing information. It's a documentation record, not a certificate.</span>
+            </button></li>
+            <li><button class="step" role="tab" aria-selected="false" aria-controls="tour-view" data-img="assets/production.webp" data-seconds="25"
+              data-alt="Production readiness checklist and job progress for both packages">
+              <span class="n">06</span><span class="t">Production readiness<span class="dur">~25s</span></span>
+              <span class="d">Before a package is released, Tenon checks the review, hardware approvals, current drawings, the BOM and materials. Package A is already on the factory floor with live job progress; Package B shows exactly what is still blocking it.</span>
+            </button></li>
+          </ol>
+          <div class="viewer" id="tour-view" role="tabpanel" aria-live="polite">
+            <figure>
+              <div class="frame">
+                <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span id="tour-label">Project overview</span></div>
+                <img id="tour-img" class="zoom" src="assets/overview.webp" width="1600" height="1000" alt="Project overview with seven live counts and the connected workflow for Package B" />
+              </div>
+            </figure>
+            <div class="tour-bar" aria-hidden="true"><i id="tour-progress"></i></div>
+            <div class="mobile-desc" id="tour-mobile">
+              <h3>Project overview</h3>
+              <p>Riverside Commercial Centre in one view: doorsets waiting for review, hardware conflicts, drawing changes, materials to buy, production readiness and fire tag paperwork. Every number is counted from the project's records, not typed in.</p>
+            </div>
+            <div class="viewer-nav">
+              <button class="icon-btn nav-prev" id="tour-prev" type="button" aria-label="Back">← Back</button>
+              <span class="nav-extras">
+                <button class="icon-btn" id="tour-restart" type="button" aria-label="Restart walkthrough">↺ Restart</button>
+                <button class="icon-btn" id="tour-auto" type="button" aria-pressed="false">▶ Auto</button>
+              </span>
+              <span class="count" id="tour-count">1 / 6</span>
+              <button class="icon-btn nav-next" id="tour-next" type="button" aria-label="Next">Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="value" class="ai-band">
+      <div class="wrap">
+        <p class="kicker">For doorset teams</p>
+        <h2>Less re-keying, fewer surprises on the factory floor.</h2>
+        <p class="sub">What a technical team would notice day to day.</p>
+        <div class="value">
+          <div><b>Specifications checked before pricing</b><span>Missing closers, conflicting sizes, TBC hardware and vague fire-rating wording are flagged with the exact source line.</span></div>
+          <div><b>One hardware schedule drives everything</b><span>Door-by-door hardware feeds the quotation, the BOM and purchasing, so a change is entered once.</span></div>
+          <div><b>No building from old drawings</b><span>Superseded revisions are stamped and kept, and production waits for the current revision to be approved.</span></div>
+          <div><b>Traceable fire tag records</b><span>Tag, rating, batch, location and documents per doorset, with gaps highlighted and flagged for follow-up.</span></div>
+          <div><b>Release only when ready</b><span>Review, hardware, drawings, BOM and materials are checked before a package reaches the floor.</span></div>
+          <div><b>Ask the project a question</b><span>"What hardware is missing?" or "Which drawings have new revisions?" Answers come from the live records and show which ones were used.</span></div>
+        </div>
+        <div class="modes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <p>The AI assists and a person decides. Every finding shows its evidence and confidence, approvals are recorded, and the system never certifies a doorset or verifies regulatory compliance. This demo runs the AI in <strong>rule-based mode</strong>; OpenAI, Anthropic or Gemini can be switched on with one setting.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="screens">
+      <div class="wrap">
+        <p class="kicker">More screens</p>
+        <h2>A closer look</h2>
+        <div class="gallery">
+          <figure><div class="frame"><img class="zoom" src="assets/hardware-editor.webp" width="1600" height="1000" loading="lazy" alt="Editing D3.05: non-fire-rated hinges flagged, approval blocked until fixed" data-caption="Editing a door: non-fire-rated hinges block approval" /></div><figcaption>Editing a door: conflicts block approval until fixed</figcaption></figure>
+          <figure><div class="frame"><img class="zoom" src="assets/purchasing.webp" width="1600" height="1000" loading="lazy" alt="Materials requiring purchasing compared with free stock" data-caption="Materials requiring purchasing, against stock not committed elsewhere" /></div><figcaption>Materials requiring purchasing</figcaption></figure>
+          <figure><div class="frame"><img class="zoom" src="assets/fire-tag-record.webp" width="1600" height="1000" loading="lazy" alt="Fire tag record with missing installation location and a flag form" data-caption="A fire tag record with missing information flagged" /></div><figcaption>Fire tag record and missing-information flag</figcaption></figure>
+          <figure><div class="frame"><img class="zoom" src="assets/assistant.webp" width="1600" height="1000" loading="lazy" alt="Assistant answering 'What hardware is missing?' with the supporting records" data-caption="Assistant answers with the records it used" /></div><figcaption>Ask in plain English – answers show their records</figcaption></figure>
+          <figure><div class="frame"><img class="zoom" src="assets/tour.webp" width="1600" height="1000" loading="lazy" alt="The in-app guided demo explaining the hardware schedule step" data-caption="The guided demo inside the app" /></div><figcaption>The in-app guided demo</figcaption></figure>
+          <figure><div class="frame phone-cell"><img class="zoom" src="assets/mobile.webp" width="560" height="1212" loading="lazy" alt="Doorset demo on a phone" data-caption="Works on phones and tablets" /></div><figcaption>Works on phones and tablets</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="scope" style="padding-top: 0">
+      <div class="wrap">
+        <p class="kicker">What's built</p>
+        <h2>A working application, shown honestly.</h2>
+        <div class="built two">
+          <div class="list-card yes">
+            <h3>Built and working</h3>
+            <ul>
+              <li>Every screen here is the real application, running on a PostgreSQL database</li>
+              <li>Quotation, BOM and purchasing figures calculated by the server</li>
+              <li>Approvals by role, with names and times recorded</li>
+              <li>Drawing revisions protected against overwrite by the database itself</li>
+              <li>The demo project resets on its own without touching other data</li>
+              <li>70 automated backend tests</li>
+            </ul>
+          </div>
+          <div class="list-card bounds">
+            <h3>Demo boundaries</h3>
+            <ul>
+              <li>The project, companies and data are fictional</li>
+              <li>AI runs in rule-based mode here; live AI providers are a setting</li>
+              <li>The fire tag register is a documentation aid, not a certification system</li>
+              <li>Not yet hardened for production (e.g. single sign-on, backups, monitoring)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="padding-top: 0">
+      <div class="wrap">
+        <div class="contact">
+          <div>
+            <h2>Want to see it running?</h2>
+            <p>I'm happy to walk you through the live application, including the guided demo, or talk about how something like this could fit your team's workflow.</p>
+          </div>
+          <div class="who">
+            <strong>Mohd Azeem</strong>
+            Software &amp; AI developer<br />
+            Reply to my LinkedIn message to set up a time.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Tenon is an independent concept demonstration. Riverside Commercial Centre, Kestrel Bay Doorsets Ltd, Tidewater Construction Ltd and every person, supplier and record shown are fictional. It is not affiliated with, endorsed by or built for any door manufacturer.</p>
+      <p>Specification reviews are suggestions for a qualified person to check. Fire tag records are administrative and make no compliance claims.</p>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Screenshot">
+    <button type="button" id="lightbox-close" aria-label="Close">×</button>
+    <img id="lightbox-img" alt="" />
+    <p id="lightbox-cap"></p>
+  </dialog>
+
+  <script>
+    (function () {
+      var steps = Array.prototype.slice.call(document.querySelectorAll(".step"));
+      var img = document.getElementById("tour-img");
+      var label = document.getElementById("tour-label");
+      var count = document.getElementById("tour-count");
+      var mobile = document.getElementById("tour-mobile");
+      var bar = document.getElementById("tour-progress");
+      var autoBtn = document.getElementById("tour-auto");
+      var current = 0, timer = null, elapsed = 0;
+
+      function title(s) { return s.querySelector(".t").firstChild.textContent.trim(); }
+      function show(i, focus) {
+        current = (i + steps.length) % steps.length;
+        elapsed = 0;
+        steps.forEach(function (s, k) { s.setAttribute("aria-selected", k === current ? "true" : "false"); s.tabIndex = k === current ? 0 : -1; });
+        var s = steps[current];
+        img.src = s.dataset.img; img.alt = s.dataset.alt; img.dataset.caption = title(s);
+        label.textContent = title(s);
+        count.textContent = (current + 1) + " / " + steps.length;
+        mobile.querySelector("h3").textContent = title(s);
+        mobile.querySelector("p").textContent = s.querySelector(".d").textContent;
+        bar.style.width = "0%";
+        if (focus) s.focus();
+        if (window.innerWidth <= 900) {
+          var list = s.closest(".steps"), li = s.parentElement;
+          list.scrollTo({ left: li.offsetLeft - (list.clientWidth - li.offsetWidth) / 2, behavior: "auto" });
+        }
+      }
+      function stopAuto() { clearInterval(timer); timer = null; autoBtn.setAttribute("aria-pressed", "false"); autoBtn.textContent = "▶ Auto"; bar.style.width = "0%"; }
+      function startAuto() {
+        autoBtn.setAttribute("aria-pressed", "true"); autoBtn.textContent = "❚❚ Pause";
+        timer = setInterval(function () {
+          elapsed += 0.25;
+          var secs = Number(steps[current].dataset.seconds || 20);
+          bar.style.width = Math.min(100, (elapsed / secs) * 100) + "%";
+          if (elapsed >= secs) { if (current === steps.length - 1) stopAuto(); else show(current + 1); }
+        }, 250);
+      }
+      steps.forEach(function (s, i) {
+        s.addEventListener("click", function () { show(i); });
+        s.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); show(current + 1, true); }
+          if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); show(current - 1, true); }
+        });
+      });
+      document.getElementById("tour-prev").addEventListener("click", function () { show(current - 1); });
+      document.getElementById("tour-next").addEventListener("click", function () { show(current + 1); });
+      document.getElementById("tour-restart").addEventListener("click", function () { show(0); });
+      autoBtn.addEventListener("click", function () { if (timer) stopAuto(); else startAuto(); });
+      document.querySelectorAll("[data-step]").forEach(function (a) { a.addEventListener("click", function () { show(Number(a.dataset.step) - 1); }); });
+      window.addEventListener("load", function () { setTimeout(function () { steps.forEach(function (s) { var p = new Image(); p.src = s.dataset.img; }); }, 600); });
+
+      var box = document.getElementById("lightbox"), boxImg = document.getElementById("lightbox-img"), boxCap = document.getElementById("lightbox-cap");
+      document.addEventListener("click", function (e) {
+        var t = e.target;
+        if (t && t.classList && t.classList.contains("zoom") && typeof box.showModal === "function") {
+          boxImg.src = t.currentSrc || t.src; boxImg.alt = t.alt; boxCap.textContent = t.dataset.caption || t.alt; box.showModal();
+        }
+      });
+      document.getElementById("lightbox-close").addEventListener("click", function () { box.close(); });
+      box.addEventListener("click", function (e) { if (e.target === box) box.close(); });
+    })();
+  </script>
+</body>
+</html>
